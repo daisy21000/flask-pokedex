@@ -1,6 +1,10 @@
 import os
 
 from flask import Flask, render_template
+import requests_cache
+import pokepy
+
+requests_cache.install_cache('pokedex_cache', backend='sqlite', expire_after=86400)
 
 
 def create_app(test_config=None):
@@ -24,5 +28,14 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         return render_template('index.html')
-
+    
+    @app.route('/pokedex')
+    def pokedex():
+        client_cache = pokepy.V2Client()
+        pokemon_list_string = "<ul>"
+        for i in range(1, 1025):
+            pokemon = client_cache.get_pokemon(i)[0]
+            pokemon_list_string += f"<li>{pokemon.species.name.title()}</li>"
+        pokemon_list_string += "</ul>"
+        return pokemon_list_string
     return app
