@@ -32,12 +32,12 @@ def create_app(test_config=None):
     
     @app.route('/pokedex')
     def pokedex():
-        client_cache = pokepy.V2Client()
-        pokemon_list_string = "<ul>"
+        client = pokepy.V2Client()
+        pokemon_list = []
         for i in range(1, 1025):
-            pokemon = client_cache.get_pokemon(i)[0]
-            pokemon_list_string += f"<li>{pokemon.species.name.title()}</li>"
-        pokemon_list_string += "</ul>"
-        return pokemon_list_string
+            pokemon = client.get_pokemon(i)[0]
+            pokemon_list.append(pokemon)
+        return render_template('pokedex.html', pokemon_list=pokemon_list)
+            
 
     return app

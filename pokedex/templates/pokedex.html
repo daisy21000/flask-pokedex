@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Pokedex{% endblock %}
+{% block content %}
+<h1>Pokedex</h1>
+<div class="container">
+    <div class="row">
+        {% for pokemon in pokemon_list %}
+        <div class="col-sm-4 col-md-3 col-lg-2 mb-4">
+            <div class="card">
+                <img src="{{ pokemon.sprites.front_default }}" class="card-img-top" style="width: auto;" alt="{{ pokemon.species.name.capitalize() }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pokemon.species.name.capitalize() }}</h5>
+                    <p class="card-text">Type: {{ pokemon.types[0].type.name.capitalize() }} 
+                    {% if pokemon.types|length > 1 %}
+                        / {{ pokemon.types[1].type.name.capitalize() }}
+                    {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">ID: {{ pokemon.id }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
