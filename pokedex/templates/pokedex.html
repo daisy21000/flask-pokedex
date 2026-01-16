@@ -17,11 +17,71 @@
                     </p>
                 </div>
                 <div class="card-footer">
-                    <small class="text-muted">ID: {{ pokemon.id }}</small>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pokemonModal{{ pokemon.id }}">
+                        Details
+                    </button>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+<!-- Modal Start -->
+{% for pokemon in pokemon_list %}
+<div class="modal" tabindex="-1" id="pokemonModal{{ pokemon.id }}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5">{{ pokemon.species.name.capitalize() }}</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="carousel{{pokemon.id}}" class="carousel slide" data-bs-theme="dark">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carousel{{pokemon.id}}" data-bs-slide-to="0" class="active" aria-current="true" aria-label="{{ pokemon.species.name.capitalize() }} front default"></button>
+                <button type="button" data-bs-target="#carousel{{pokemon.id}}" data-bs-slide-to="1" aria-label="{{ pokemon.species.name.capitalize() }} back default"></button>
+                <button type="button" data-bs-target="#carousel{{pokemon.id}}" data-bs-slide-to="2" aria-label="{{ pokemon.species.name.capitalize() }} front shiny"></button>
+                <button type="button" data-bs-target="#carousel{{pokemon.id}}" data-bs-slide-to="3" aria-label="{{ pokemon.species.name.capitalize() }} back shiny"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                <img src="{{ pokemon.sprites.front_default }}" class="d-block w-100" alt="{{ pokemon.species.name.capitalize() }} front default">
+                </div>
+                <div class="carousel-item">
+                <img src="{{ pokemon.sprites.back_default }}" class="d-block w-100" alt="{{ pokemon.species.name.capitalize() }} back default">
+                </div>
+                <div class="carousel-item">
+                <img src="{{ pokemon.sprites.front_shiny }}" class="d-block w-100" alt="{{ pokemon.species.name.capitalize() }} front shiny">
+                </div>
+                <div class="carousel-item">
+                <img src="{{ pokemon.sprites.back_shiny }}" class="d-block w-100" alt="{{ pokemon.species.name.capitalize() }} back shiny">
+                </div>  
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{pokemon.id}}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel{{pokemon.id}}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <p><strong>Abilities:</strong> {{ pokemon.abilities | map(attribute='ability.name') | join(', ') }}</p>
+        <p><strong>Stats:</strong>
+            <ul>
+                {% for stat in pokemon.stats %}
+                <li>{{ stat.stat.name.capitalize() }}: {{ stat.base_stat }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<!-- Modal End -->
 {% endblock %}
