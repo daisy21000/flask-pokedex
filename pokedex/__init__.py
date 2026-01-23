@@ -61,7 +61,7 @@ def create_app(test_config=None):
                 return render_template('pokedex.html', pokemon_list=pokemon_list)
         else:
             pokemon_list = []
-            for i in range(1, 1025):
+            for i in range(1, 1026):
                 pokemon = client.get_pokemon(i)[0]
                 pokemon_list.append(pokemon)
             return render_template('pokedex.html', pokemon_list=pokemon_list)
